@@ -2,13 +2,14 @@
   "name": "roadshare",
   "version": "1.0.0",
   "description": "A real-time location sharer using JavaScript and NodeJS that works even if you lose connection.",
-  "main": "index.js",
+  "main": "run-server.js",
+  "directories": {
+    "test": "test"
+  },
   "dependencies": {
-    "express": "^4.16.4"
+    "path": "^0.12.7"
   },
-  "devDependencies": {
-    "mocha": "^6.0.0"
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "mocha"
   },
