@@ -1,0 +1,25 @@
+{
+  "name": "roadshare",
+  "version": "1.0.0",
+  "description": "A real-time location sharer using JavaScript and NodeJS that works even if you lose connection.",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "mocha": "^6.0.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HenryDangPRG/RoadShare.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HenryDangPRG/RoadShare/issues"
+  },
+  "homepage": "https://github.com/HenryDangPRG/RoadShare#readme"
+}
