@@ -7,6 +7,8 @@
     "test": "test"
   },
   "dependencies": {
+    "express": "^4.16.4",
+    "mysql": "^2.16.0",
     "path": "^0.12.7"
   },
   "devDependencies": {},
