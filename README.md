@@ -17,3 +17,5 @@ port : "3306"
 Once you have this setup, you will need to use the roadshare.sql file, which is
 a MySQL dump of the table configuration that you need. Simply load the sql file
 and you are set.
+
+The API key for the google map's API is :API_KEY = AIzaSyBRcz1PygeoeBld7HsyqvwnVbQg6_XldXA
