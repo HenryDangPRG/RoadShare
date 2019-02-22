@@ -4,7 +4,8 @@ var pool = mysql.createPool(mysql_config.databaseOptions);
 
 // Wraps your query with error-handling so that you don't have to
 // keep doing if(error) throw err each time. Also turns it into a nice
-// JSON format
+// JSON format, which is the format you should be using.
+// Note that the callback is a function. Don't pass in any parameters!
 function getQuery(query, callback){
     pool.query(query, function(err, results, fields) {
         if(err){
