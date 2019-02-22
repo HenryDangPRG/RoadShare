@@ -19,3 +19,5 @@ a MySQL dump of the table configuration that you need. Simply load the sql file
 and you are set.
 
 The API key for the google map's API is :API_KEY = AIzaSyBRcz1PygeoeBld7HsyqvwnVbQg6_XldXA
+
+Testing is done with mochajs, and can be run with `npm test`.
