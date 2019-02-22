@@ -2,9 +2,26 @@
     <head>
         <title>RoadShare</title>
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		
+		<script type="text/javascript">
+			function initMap(){
+			
+			var options = {
+				zoom:8,
+				center: {lat: 40, lng: -75}
+			}
+			map = new google.maps.Map(document.getElementById('map'),options); 
+		}
+		</script> 
+
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRcz1PygeoeBld7HsyqvwnVbQg6_XldXA&callback=initMap"
+		async defer></script>
+		
     </head>
 
     <body>
         <h1>Welcome {{user}} to the app!</h1>
+		<h1>RoadShare</h1>
+		<div id="map"></div>		
     </body>
 </html>
