@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>RoadShare</title>
+	
+	<style type="text/css">
+		/*#map{
+			height: 400px; 
+			width: 100%; 
+		}*/
+
+		#map {
+		left:0;
+		top:0;
+		height:100%;
+		width:100%;
+		position:absolute;
+		}
+	</style>
+</head>
+<body>
+	<h1>RoadShare</h1>
+	<div id="map"></div>
+	<div id="answer"></div>
+	<script type="text/javascript">
+		function initMap(){
+
+			var myLatLng = {lat: 40, lng: -75};
+			var options = {
+				zoom:8,
+				center: {lat: 40, lng: -75}
+			}
+			var map = new google.maps.Map(document.getElementById('map'),options); 
+
+			var marker = new google.maps.Marker({
+			  position: myLatLng,
+			  map: map,
+			  title: 'Hello World!'
+			});
+		}
+	</script> 
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRcz1PygeoeBld7HsyqvwnVbQg6_XldXA&callback=initMap"
+    async defer></script>
+	<script src="roadshare_client.js"></script>
+</body>
+</html>
