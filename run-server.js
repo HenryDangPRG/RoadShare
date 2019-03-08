@@ -45,6 +45,7 @@ app.get('/user/:userId', function(req, res){
     });
 });
 
+// You need to make a GET AJAX request to /update
 app.get('/update', function(req, res){
-
+    
 });
