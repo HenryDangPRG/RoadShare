@@ -18,13 +18,16 @@ app.listen(8080, function(){
 });
 
 // This is nececssary because the SQL call happens aysnchronously
-function renderUserPage(res, name){
+function renderUserPage(res, name, id){
     res.render('main',{
         showTitle : true,
         helpers : {
             user: function() { 
                 return name;
-            }
+            },
+            id : function() {
+                return id; 
+            },
         }
     });
 }
@@ -34,10 +37,14 @@ app.get('/user/:userId', function(req, res){
     var username = "";
     mysql_util.getQuery(query, function(results){
         try {
-            renderUserPage(res, results[0].username)
+            renderUserPage(res, results[0].username, id)
         } catch (err){
             console.log("[Rendering Error] " + err);
             renderUserPage(res, "User Not Found");
         }
     });
+});
+
+app.get('/update', function(req, res){
+
 });
