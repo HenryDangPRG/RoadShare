@@ -8,7 +8,7 @@ var mysql_util = require('./util/mysql_util')
 var express_hbr = require('express-handlebars');
 
 var hbr = express_hbr.create({});
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views')));
 
 app.engine('handlebars', hbr.engine);
 app.set('view engine', 'handlebars');
