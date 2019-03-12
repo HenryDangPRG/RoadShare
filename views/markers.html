@@ -112,17 +112,13 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         gmarkers[i].setMap(null);
       }
       gmarkers = [];
-      //TODO: Change this number to whatever you'd like.
+      //TODO: Change this number to whatever you'd like. It is in METERS.
       var points = polyline.GetPointsAtDistance(1609.34);
       for (var i=0; i<points.length; i++) {
          var marker = new google.maps.Marker({
            map: map,
            position: points[i],
            title: i+1+" mile",
-             //TODO: This is where you need to work your magic with the icons, examine the object! Set it programatically
-             // in the button!
-           icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-
          });
          marker.addListener('click', openInfoWindow);
          gmarkers.push(marker);
@@ -174,11 +170,9 @@ function getMarkerImage(iconColor) {
 }
 
 function changeColor(){
-    console.log(gmarkers);
     for(i = 0; i < gmarkers.length; i++){
-        gmarkers[i].icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+        gmarkers[i].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
     }
-    console.log("Hello?");
 }
 
 </script>
