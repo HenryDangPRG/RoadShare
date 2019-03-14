@@ -118,7 +118,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
          var marker = new google.maps.Marker({
            map: map,
            position: points[i],
-           title: i+1+" mile",
+           title: (i+1).toString(),
          });
          marker.addListener('click', openInfoWindow);
          gmarkers.push(marker);
