@@ -177,3 +177,16 @@ function muller (f, x0, x1, x2, tol = G_MINWID, maxn = 500) {
 
     return p2;
 }
+
+
+function getDeltaPos (pointsxy, tol = G_MINWID) {
+    return -1;
+}
+
+function getVelocity (pointsxy, tol = G_MINWID) {
+    return -1;
+}
+
+function getAccel (pointsxy, tol = G_MINWID) {
+    return -1;
+}
