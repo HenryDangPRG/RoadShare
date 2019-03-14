@@ -152,6 +152,7 @@ function createMarker(latlng, label, html, color) {
   });
   return marker;
 }
+
 function openInfoWindow() {
     var contentString = this.getTitle()+"<br>"+this.getPosition().toUrlValue(6);
     infowindow.setContent(contentString);
@@ -172,8 +173,14 @@ function getMarkerImage(iconColor) {
 }
 
 function changeColor(){
+    // Current distance in miles, MUST be an integer.
+    //TODO: You need to create a new table to store the current distance
+    // in miles that the user has moved!
+    var currentDistance = 6;
     for(i = 0; i < gmarkers.length; i++){
-        gmarkers[i].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+        if(parseInt(gmarkers[i].title) <= currentDistance){
+            gmarkers[i].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+        }
     }
 }
 
