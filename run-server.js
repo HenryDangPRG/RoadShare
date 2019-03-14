@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-
+var id;
 var mysql = require('mysql');
 var mysql_util = require('./util/mysql_util')
 
@@ -32,7 +32,7 @@ function renderUserPage(res, name, id){
     });
 }
 app.get('/user/:userId', function(req, res){
-    var id = parseInt(req.params.userId);
+    id = parseInt(req.params.userId);
     var query = mysql.format('SELECT username FROM users WHERE ID = ?', [id]);
     var username = "";
     mysql_util.getQuery(query, function(results){
@@ -45,7 +45,16 @@ app.get('/user/:userId', function(req, res){
     });
 });
 
-// You need to make a GET AJAX request to /update
 app.get('/update', function(req, res){
-    
+   
+    var sql = mysql.format('SELECT timestamp, latitude, longitude FROM markers, routes, users WHERE  markers.route_id = routes.route_id && user_id = ?', [id]);
+    mysql_util.getQuery(sql,function(results){
+        try {
+                res.status(200).send(JSON.stringify(results)); 
+                console.log(JSON.stringify(results));
+
+        } catch (err){
+            res.status(200).send({lat:40, lng: -75});
+        }
+    });   
 });
