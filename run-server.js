@@ -18,7 +18,7 @@ app.listen(8080, function(){
 });
 
 // This is nececssary because the SQL call happens aysnchronously
-function renderUserPage(res, name, id){
+function renderUserPage(res, name, id, route_id){
     res.render('main',{
         showTitle : true,
         helpers : {
@@ -28,19 +28,27 @@ function renderUserPage(res, name, id){
             id : function() {
                 return id; 
             },
+            route_id : function() {
+                return route_id;
+            }
         }
     });
 }
-app.get('/user/:userId', function(req, res){
+
+app.get('/user/:userId/:route_id', function(req, res){
+    console.log(req.params)
     id = parseInt(req.params.userId);
-    var query = mysql.format('SELECT username FROM users WHERE ID = ?', [id]);
-    var username = "";
+    route_id = parseInt(req.params.route_id);
+    console.log(route_id);
+
+    var query = mysql.format('SELECT users.username, routes.route_id FROM routes, users WHERE routes.user_id=users.ID && ID = ? && route_id = ?', [id, route_id]);
     mysql_util.getQuery(query, function(results){
         try {
-            renderUserPage(res, results[0].username, id)
+            console.log(results);
+            renderUserPage(res, results[0].username, id, results[0].route_id)
         } catch (err){
             console.log("[Rendering Error] " + err);
-            renderUserPage(res, "User Not Found");
+            renderUserPage(res, "<User Or Route Id Not Found>");
         }
     });
 });
@@ -58,3 +66,4 @@ app.get('/update', function(req, res){
         }
     });   
 });
+
