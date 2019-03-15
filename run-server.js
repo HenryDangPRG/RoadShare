@@ -6,9 +6,12 @@ var mysql = require('mysql');
 var mysql_util = require('./util/mysql_util')
 
 var express_hbr = require('express-handlebars');
+var bodyParser = require('body-parser')
 
 var hbr = express_hbr.create({});
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
 app.engine('handlebars', hbr.engine);
 app.set('view engine', 'handlebars');
@@ -57,4 +60,41 @@ app.get('/update', function(req, res){
             res.status(200).send({lat:40, lng: -75});
         }
     });   
+});
+
+app.post('/data', function(req, res) {
+    uid = parseInt(req.query.userId);
+    rid = parseInt(req.query.routeId);
+    dat = req.body.points;
+    //console.log(req.body)
+    res.status(200).send("OK");
+    
+    var vals = ''
+    for (var i; i<dat.length;i++) {
+        vals=vals+'(';
+        vals=vals+dat[i]['route_id']+',';
+        vals=vals+dat[i]['timestamp']+',';
+        vals=vals+dat[i]['accelerometer_x']+',';
+        vals=vals+dat[i]['accelerometer_y']+',';
+        vals=vals+dat[i]['accelerometer_z']+',';
+        vals=vals+dat[i]['latitude']+',';
+        vals=vals+dat[i]['longitude'];
+        vals=vals+'),\n';
+    }
+    vals+=';'
+    var query ='INSERT INTO markers \
+                    (route_id, timestamp, accelerometer_x, accelerometer_y, accelerometer_z, latitude, longitude) \
+                VALUES \
+                    '+vals;
+    mysql_util.getQuery(query, function(results) {
+        try {
+            console.log(results)
+        } catch (err) {
+            console.log("Error storing markers] " + err);
+        }
+    });
+    
+    //msg=""+uid+":"+rid+"-"+dat[0]['timestamp']+" ("+dat[0]['accelerometer_x']+","+dat[0]['accelerometer_y']+")"
+    //console.log("Received "+dat.length+" points");
+    //console.log(msg);
 });
