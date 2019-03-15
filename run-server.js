@@ -35,11 +35,9 @@ function renderUserPage(res, name, id, route_id){
     });
 }
 
-app.get('/user/:userId/:route_id', function(req, res){
-    console.log(req.params)
-    id = parseInt(req.params.userId);
-    route_id = parseInt(req.params.route_id);
-    console.log(route_id);
+app.get('/user', function(req, res){
+    id = parseInt(req.query.id);
+    route_id = parseInt(req.query.route_id);
 
     var query = mysql.format('SELECT users.username, routes.route_id FROM routes, users WHERE routes.user_id=users.ID && ID = ? && route_id = ?', [id, route_id]);
     mysql_util.getQuery(query, function(results){
