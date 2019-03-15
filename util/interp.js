@@ -178,6 +178,11 @@ function muller (f, x0, x1, x2, tol = G_MINWID, maxn = 500) {
     return p2;
 }
 
+function logdat (jsonobj) {
+    //jsonobj has attributes
+    //convert  m/s/s to lat/s/s + lng/s/s
+    return true;
+}
 
 function getDeltaPos (pointsxy, tol = G_MINWID) {
     return -1;
@@ -188,5 +193,11 @@ function getVelocity (pointsxy, tol = G_MINWID) {
 }
 
 function getAccel (pointsxy, tol = G_MINWID) {
+    //returns ||<x,y>|| magnitude
     return -1;
+}
+
+function getStops (dur = 100.0){
+    //returns (lat,long) pairs for stopping points (pauses greater than N seconds)
+    return [(-1,-1)];
 }
