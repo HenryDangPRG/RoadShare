@@ -67,3 +67,28 @@ app.get('/update', function(req, res){
     });   
 });
 
+app.get("/newUser", function(req, res){
+    var userName = req.query.username;
+    var query = mysql.format('INSERT INTO users (username) VALUES (?)', [userName]);
+
+    mysql_util.getQuery(query,function(results){
+        try {
+            console.log("Added new user : " + userName);
+
+            var query = mysql.format('SELECT id FROM users WHERE userName = ?', [userName]);
+
+            mysql_util.getQuery(query,function(results){
+                try {
+                    res.sendStatus(200).send(results[results.length-1].id);
+                } catch (err){
+                    res.sendStatus(400).send("-1");
+                    return;
+                }
+            });   
+        } catch (err){
+            res.sendStatus(400).send("-1");
+            return;
+        }
+    });   
+
+});
