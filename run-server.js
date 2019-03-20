@@ -3,10 +3,12 @@ var app = express();
 var path = require('path');
 var id;
 var mysql = require('mysql');
-var mysql_util = require('./util/mysql_util')
+var mysql_util = require('./util/mysql_util');
 
 var express_hbr = require('express-handlebars');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+
+var interpsuite = require('./util/interp');
 
 var hbr = express_hbr.create({});
 app.use(express.static(path.join(__dirname, 'views')));
@@ -68,9 +70,9 @@ app.get('/update', function(req, res){
 });
 
 app.post('/data', function(req, res) {
-    uid = parseInt(req.query.userId);
-    rid = parseInt(req.query.routeId);
-    dat = req.body.points;
+    var uid = parseInt(req.query.userId);
+    var rid = parseInt(req.query.routeId);
+    var dat = req.body.points;
 
     res.status(200).send("OK");
 
@@ -126,13 +128,31 @@ app.get("/newUser", function(req, res){
     });   
 })
 
-/*
+
 app.get("/calculate", function(req, res){
     console.log(req.query);
+    var route_id = parseInt(req.query.route_id);
+    var user_id = parseInt(req.query.user_id);
+
+    var query = 'SELECT timestamp, accelerometer_x, accelerometer_y FROM markers WHERE markers.route_id = ?'
+    var query = mysql.format(query, [route_id]);
+
+    mysql_util.getQuery(query, function(results){
+        try {
+            n=results.length;
+            pointsxy=[];
+            for (var i=0; i<results.length;i++)
+                pointsxy.append([results['timestamp'],results['accelerometer_x'],results['accelerometer_y']]);
+            res.write(""+getDeltaMag_m(pointsxy));
+            res.end();
+        } catch (err){
+            console.log("[CalcError] Error calculating displacement: " + err);
+        }
+    });
+
     res.write("3220");
-    res.end();
 });
-*/
+
 
 // TODO : Finish this endpoint
 app.get('/startend', function(req, res){
