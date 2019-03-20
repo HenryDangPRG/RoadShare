@@ -132,7 +132,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     }
   });
 }
-google.maps.event.addDomListener(window, 'load', initMap);
+//google.maps.event.addDomListener(window, 'load', initMap);
 
 function createMarker(latlng, label, html, color) {
   // alert("createMarker("+latlng+","+label+","+html+","+color+")");
@@ -227,8 +227,7 @@ function fastForward() {
     $.ajax({
         type: "GET",
         url: URL,
-        dataType: "html",
-        data: {"userId": userId, "route:Id": routeId},
+        data: {"userId": userId, "routeId": routeId},
         success: function(msg){
             numMeters = parseFloat(msg);
             currentDistance = numMeters * 0.000621371;
@@ -241,10 +240,39 @@ function fastForward() {
     //TODO: Throw the markers into start and end latitude with JQuery, then populate fields, then get directions  
 }
 
+function fillFields(){
+    URL = "/startend"
+    routeId = $("#routeId").text();
+
+    $.ajax({
+        type: "GET",
+        url: URL,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: {"route_id": routeId},
+        success: function(msg){
+            $("#startLat").val(msg.start_lat);
+            $("#startLong").val(msg.start_long);
+            $("#endLat").val(msg.end_lat);
+            $("#endLong").val(msg.end_long);
+            populateFields();
+            var checkExist = setInterval(function(){
+                if($("#end").val() != ""){
+                    initMap();        
+                    clearInterval(checkExist);
+                }
+            }, 100);
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+            alert("Could not complete AJAX call to startend because " + thrownError);
+        }
+    });
+}
+
 </script>
 
    </head>
-   <body>
+   <body onload=fillFields()>
      <h1>Welcome {{user}} to the app! ID: <p style="display:inline" id="userId">{{id}}</p>, Route ID: <p style="display:inline" id="routeId">{{route_id}}</p></h1>
      <div id="map"></div>
      <div id="floating-panel">
@@ -257,10 +285,10 @@ function fastForward() {
   <button id="populateButton" onclick="populateFields()">Populate Fields</button>
     </br></br>
   <b>Start: </b>
-  <input id="start" value="New York, NY" /><br>
+  <input id="start" value="" /><br>
         <br>
   <b>End: </b>
-  <input id="end" value="Newark, NJ" /><br>
+  <input id="end" value="" /><br>
   <input id="btn" value="Get Directions" type="button" />
   <button id="changeColorButton" onclick="changeColor()">Change everythings color</button>
   <button onclick="fastForward()">Fast Forward One Hour</button>
