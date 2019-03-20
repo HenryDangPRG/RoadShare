@@ -97,6 +97,30 @@ INSERT INTO `routes` VALUES (1,1,'The Test Route','1551916800');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user2`
+--
+
+DROP TABLE IF EXISTS `user2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user2` (
+  `user_name` varchar(20) NOT NULL,
+  `password` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`user_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user2`
+--
+
+LOCK TABLES `user2` WRITE;
+/*!40000 ALTER TABLE `user2` DISABLE KEYS */;
+INSERT INTO `user2` VALUES ('',''),('aaaa','1234'),('abc0000','0000'),('abc01','1111'),('kst49','abc123'),('rem54','abc111');
+/*!40000 ALTER TABLE `user2` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -129,4 +153,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-20 13:00:54
+-- Dump completed on 2019-03-20 13:31:45
