@@ -198,8 +198,8 @@ app.get("/newRoute", function(req, res){
 
 app.get("/calculate", function(req, res){
     console.log(req.query);
-    var user_id = parseInt(req.query.user_id);
-    var route_id = parseInt(req.query.route_id);
+    var route_id = parseInt(req.query.routeId);
+    var user_id = parseInt(req.query.userId);
 
     var query = 'SELECT timestamp, accelerometer_x, accelerometer_y FROM markers WHERE markers.route_id = ?'
     var query = mysql.format(query, [route_id]);
@@ -210,7 +210,7 @@ app.get("/calculate", function(req, res){
             pointsxy=[];
             for (var i=0; i<results.length;i++)
                 pointsxy.append([results['timestamp'],results['accelerometer_x'],results['accelerometer_y']]);
-            res.write(""+interpsuite.getDeltaMag_m(pointsxy));
+            res.write(""+ interpsuite.getDeltaMag_m(pointsxy));
             res.end();
         } catch (err){
             console.log("[CalcError] Error calculating displacement: " + err);
