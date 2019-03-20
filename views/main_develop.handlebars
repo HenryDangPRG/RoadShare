@@ -184,6 +184,10 @@ function changeColor(){
             gmarkers[i].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
         }
     }
+
+         if(currentDistance >= gmarkers.length + 1){
+            $("#resultDiv").html("<h1>User Has Reached Destination!</h1>"); 
+         }
 }
 
 function populateFields(){
@@ -290,9 +294,10 @@ function fillFields(){
   <b>End: </b>
   <input id="end" value="" /><br>
   <input id="btn" value="Get Directions" type="button" />
-  <button id="changeColorButton" onclick="changeColor()">Change everythings color</button>
   <button onclick="fastForward()">Fast Forward One Hour</button>
 </div>
+
+    <div id="resultDiv"></div>
 </script> 
    </body>
  </html>
