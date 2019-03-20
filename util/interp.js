@@ -68,7 +68,7 @@ function magnitude (pointsxy) {
         t=pointsxy[i][0];
         x=pointsxy[i][1];
         y=pointsxy[i][2];
-        mag.append([t,x*x+y*y]);
+        mag.push([t,x*x+y*y]);
     }
     return mag;
 }
@@ -131,7 +131,7 @@ function splinecoeffs(points) {
             h=points[i+1][0]-points[i][0];
         }
         var a=0;var b=0;var c=0; var d=0;
-        mat.append([x,y,h,a,b,c,d]);
+        mat.push([x,y,h,a,b,c,d]);
     }
     for (var i=1; i<n-1; i++) {        
         var ai=3.0/mat[i][h_]*(mat[i+1][a_]-mat[i][a_]) - 3.0/mat[i-1][h_]*(mat[i][a_]-mat[i][a_]);
@@ -211,10 +211,10 @@ function getDeltaMag_m(pointsxy, tol = G_MINWID) {
     fxx=[];
     fxxx=[];
     for (var i=0;i<n-1;i++)  {
-        fxx.append(ctrap_unsafe(fx,from=0,to=i));
+        fxx.push(ctrap_unsafe(fx,from=0,to=i));
     }
     /*for (var i=0;i<n-2;i++){
-        fxxx.append(ctrap_unsafe(fxx,from=0,to=i));
+        fxxx.push(ctrap_unsafe(fxx,from=0,to=i));
     }*/
     return ctrap_unsafe(fxx);
 }

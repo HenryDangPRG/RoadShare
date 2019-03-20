@@ -209,8 +209,10 @@ app.get("/calculate", function(req, res){
             n=results.length;
             pointsxy=[];
             for (var i=0; i<results.length;i++)
-                pointsxy.append([results['timestamp'],results['accelerometer_x'],results['accelerometer_y']]);
-            res.write(""+ interpsuite.getDeltaMag_m(pointsxy));
+                pointsxy.push([results['timestamp'],results['accelerometer_x'],results['accelerometer_y']]);
+            deltaMag = interpsuite.getDeltaMag_m(pointsxy);
+            res.write(deltaMag.toString());
+            console.log(deltaMag);
             res.end();
         } catch (err){
             console.log("[CalcError] Error calculating displacement: " + err);
