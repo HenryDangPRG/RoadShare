@@ -18,11 +18,26 @@
 </head>
 
 <body class="login-page sidebar-collapse">
-  <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
-    <h1 style=" font-weight: bold;">WELCOME</h1>
-  </nav>
+
+
+<nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+    
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <h1 style="text-align: center; font-weight: bold;">Welcome</h1>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+               
+                <a href="index.html" class="btn btn-secondary btn-sm">log out</a>
+            </li>
+        </ul>
+
+</nav>
   <div class="page-header header-filter" style="background-image: url('bg7.jpg'); background-size: cover; background-position: top center;">
-    <div class="container">
+    <div class="container" style="width: 20%; margin-left: 10px">
 
 
       <div class="card-body" style="background-color: white">
@@ -30,31 +45,24 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">
                       <i class="material-icons">face</i>
-                      Driver id:
                     </span>
                   </div>
-                  <select class="form-control input-sm" >
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                  </select>
+                  <input type="text" class="form-control" placeholder="Driver's id...">
                 </div>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text">
                       <i class="material-icons">directions</i>
-                      route id:
                     </span>
                   </div>
-                    <select class="form-control input-sm">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                    </select>
-                  
+                     <input type="text" class="form-control" placeholder="Route id...">
                 </div>
-                <a href="#pablo" class="btn btn-primary btn-wd btn-lg">Get Started</a>
-              </div>     
+
+                <div class="input-group">
+                   <a href="http://localhost:8080/user/1" class="btn btn-primary btn-sm">Get started</a>
+                </div>
+                 
+      </div>     
     </div>
   </div>
   

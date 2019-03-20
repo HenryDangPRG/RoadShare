@@ -38,7 +38,6 @@ function renderUserPage(res, name, id, route_id){
         }
     });
 }
-
 app.get('/user', function(req, res){
     var id = parseInt(req.query.id);
     var route_id = parseInt(req.query.route_id);
@@ -55,8 +54,51 @@ app.get('/user', function(req, res){
     });
 });
 
+app.get('/login', function(req, res){
+    //var query = `SELECT user_name FROM user2 WHERE user_name =${userid} && password=${password}`;
+    var Userid = req.query.userid; 
+    var password = req.query.password; 
+    var query = mysql.format('SELECT user_name FROM user2 WHERE user_name =? && password=?', [Userid,password]);
+    console.log(query);
+    console.log(Userid, password);
+    mysql_util.getQuery(query, function(results){
+        try {
+             res.status(200).send(JSON.stringify(results));
+             console.log(results); 
+        } catch (err){
+            console.log(err); 
+        }
+    });
+});
+
+app.get('/adduser',function(req,res){
+    res.redirect('./signup.html');
+});
+app.get('/signup', function (req, res) {
+    console.log("i am in SignUP"); 
+    var Userid = req.query.userid; 
+    var password = req.query.password; 
+    var query = mysql.format('INSERT INTO user2 (user_name, password) VALUES (?,?)', [Userid,password]);
+    console.log(query); 
+    mysql_util.getQuery(query, function(results){
+        try {
+            res.status(200).send("SUCCESS");
+             console.log(results); 
+        } catch (err){
+            res.status(200).send("ERROR"); 
+        }
+    });
+});
+
+app.get('/welcome',function(req,res){
+    res.redirect('./welcome.html');
+}); 
+
+
 app.get('/update', function(req, res){
     var sql = mysql.format('SELECT timestamp, latitude, longitude FROM markers, routes, users WHERE  markers.route_id = routes.route_id && user_id = ?', [id]);
+    // var sql = mysql.format('SELECT timestamp, latitude, longitude FROM markers, routes, users WHERE  markers.route_id = routes.route_id && routes.route_id = ? && user_id = ?', [route, id]);
+    console.log(sql); 
     mysql_util.getQuery(sql,function(results){
         try {
                 res.status(200).send(JSON.stringify(results)); 
