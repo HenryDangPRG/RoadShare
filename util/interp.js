@@ -236,3 +236,8 @@ function getStops (dur = 100.0){
     //returns (lat,long) pairs for stopping points (pauses greater than N seconds)
     return [(-1,-1)];
 }
+
+
+module.exports = {
+    getDeltaMag_m : getDeltaMag_m
+}

@@ -169,11 +169,37 @@ app.get("/newUser", function(req, res){
     });   
 })
 
+app.get("/newRoute", function(req, res){
+    var user_id = req.query.user_id;
+    var route_name = req.query.route_name;
+    var start_date = req.query.start_date;
+    var query = mysql.format('INSERT INTO routes (user_id, route_name, start_date) VALUES (?)', [user_id, route_name, start_date]);
+
+    mysql_util.getQuery(query,function(results){
+        try {
+            console.log("Added new route for user : " + user_id);
+
+            var query = mysql.format('SELECT route_id FROM routes WHERE user_id = ?', [user_id]);
+
+            mysql_util.getQuery(query,function(results){
+                try {
+                    res.sendStatus(200).send(results[results.length-1].id);
+                } catch (err){
+                    res.sendStatus(400).send("-1");
+                    return;
+                }
+            });   
+        } catch (err){
+            res.sendStatus(400).send("-1");
+            return;
+        }
+    });   
+})
 
 app.get("/calculate", function(req, res){
     console.log(req.query);
-    var route_id = parseInt(req.query.route_id);
     var user_id = parseInt(req.query.user_id);
+    var route_id = parseInt(req.query.route_id);
 
     var query = 'SELECT timestamp, accelerometer_x, accelerometer_y FROM markers WHERE markers.route_id = ?'
     var query = mysql.format(query, [route_id]);
@@ -184,7 +210,7 @@ app.get("/calculate", function(req, res){
             pointsxy=[];
             for (var i=0; i<results.length;i++)
                 pointsxy.append([results['timestamp'],results['accelerometer_x'],results['accelerometer_y']]);
-            res.write(""+getDeltaMag_m(pointsxy));
+            res.write(""+interpsuite.getDeltaMag_m(pointsxy));
             res.end();
         } catch (err){
             console.log("[CalcError] Error calculating displacement: " + err);
