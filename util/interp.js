@@ -61,6 +61,33 @@ function ctrap (points, targetwidth = G_MINWID, interp = false) {
     return h/2.0*(points[0][1]+points[n-1][1]+2*sum);
 }
 
+function magnitude (pointsxy) {
+    //pointsxy is [timestamp,x,y]
+    var mag=[];
+    for (var i=0;i<pointsxy.length;i++) {
+        t=pointsxy[i][0];
+        x=pointsxy[i][1];
+        y=pointsxy[i][2];
+        mag.append([t,x*x+y*y]);
+    }
+    return mag;
+}
+
+function ctrap_unsafe (points, from = 0, to = -1, targetwidth = G_MINWID, interp = false) {
+    //points is [timestamp,mag]
+    var n=points.length-1;
+    if (to>=0) {
+        n=to;
+    }
+    var sum=0;
+    for (var i=from;i<n;i++) {
+        h=points[i][0] - points[i-1][0];
+        a=(points[i][1] + points[i-1][1])/2.0 * h;
+        sum=sum+points[i][1];
+    }
+    return sum;
+}
+
 function gaussq (points, targetwidth = G_MINWID, interp = false) {
     if (true) {
         console.log("Behavior not supported");
@@ -178,10 +205,18 @@ function muller (f, x0, x1, x2, tol = G_MINWID, maxn = 500) {
     return p2;
 }
 
-function logdat (jsonobj) {
-    //jsonobj has attributes
-    //convert  m/s/s to lat/s/s + lng/s/s
-    return true;
+function getDeltaMag_m(pointsxy, tol = G_MINWID) {
+    n=pointsxy.length;
+    fx = magnitude(pointsxy);
+    fxx=[];
+    fxxx=[];
+    for (var i=0;i<n-1;i++)  {
+        fxx.append(ctrap_unsafe(fx,from=0,to=i));
+    }
+    /*for (var i=0;i<n-2;i++){
+        fxxx.append(ctrap_unsafe(fxx,from=0,to=i));
+    }*/
+    return ctrap_unsafe(fxx);
 }
 
 function getDeltaPos (pointsxy, tol = G_MINWID) {

@@ -22,6 +22,7 @@ def push(url,params,data):
     good=False;
     data=json.dumps(data)
     while not good:
+        print (data);
         resp=requests.post(url=url,params=params,json=payload);
         good=(resp.status_code==requests.codes.ok)
         if not good:
@@ -42,7 +43,7 @@ for line in fin:
         last=values[0];
     payload['points'].append( {
                                 'route_id':routeId,
-                                'timestamp':values[0],
+                                'timestamp':values[0]*1000,
                                 'accelerometer_x':values[3],
                                 'accelerometer_y':values[4],
                                 'accelerometer_z':values[5],
