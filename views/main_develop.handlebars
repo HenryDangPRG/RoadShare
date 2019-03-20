@@ -221,11 +221,14 @@ function populateFields(){
 
 function fastForward() {
     URL = "http://localhost:8080/calculate";
+    userId = $("#userId").text();
+    routeId = $("#routeId").text();
 
     $.ajax({
         type: "GET",
         url: URL,
         dataType: "html",
+        data: {"userId": userId, "route:Id": routeId},
         success: function(msg){
             numMeters = parseFloat(msg);
             currentDistance = numMeters * 0.000621371;
