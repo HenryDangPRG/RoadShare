@@ -2,80 +2,80 @@
     <head>
         <title>RoadShare</title>
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-		
-	 
-		<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRcz1PygeoeBld7HsyqvwnVbQg6_XldXA"> </script> -->
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRcz1PygeoeBld7HsyqvwnVbQg6_XldXA"></script>
+        
+     
+        <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRcz1PygeoeBld7HsyqvwnVbQg6_XldXA"> </script> -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRcz1PygeoeBld7HsyqvwnVbQg6_XldXA"></script>
 
-		<style type="text/css">
-			#map {
-				left:0;
-				top: 5%																																																																																					;
-				height: 100%;
-				width: 90%;
-				position: absolute;
-			}
-		</style>
+        <style type="text/css">
+            #map {
+                left:0;
+                top: 5%                                                                                                                                                                                                                                                                                                                                                 ;
+                height: 100%;
+                width: 90%;
+                position: absolute;
+            }
+        </style>
 
-		<script type="text/javascript">
-		var map; 		
+        <script type="text/javascript">
+        var map;        
 
-		var markers = []; 
-		function initMap(){
+        var markers = []; 
+        function initMap(){
 
-			var URL = "http://localhost:8080/update";
-			$.ajax({
-				type: "GET",
-				url : URL, 
-				dataType: "text",
-				contentType: "application/json; charset=utf-8",
-				success:function(msg){
-					var add; 
-					var m = JSON.parse(msg); 
-					var S_lt = m[0].latitude; 
-					var S_lng = m[0].longitude; 
-					var SmyLatLng= {lat: S_lt, lng: S_lng};
-					console.log("smylatlng: ", SmyLatLng);
-					var options = {
-						zoom:8,
-						center: SmyLatLng
-					}
-					var map = new google.maps.Map(document.getElementById('map'),options);
-					for(var i in m){
-						if(!markers.includes(m[i])){
-							markers.push(m[i]);
-							add = true;
-						}
+            var URL = "http://localhost:8080/update";
+            $.ajax({
+                type: "GET",
+                url : URL, 
+                dataType: "text",
+                contentType: "application/json; charset=utf-8",
+                success:function(msg){
+                    var add; 
+                    var m = JSON.parse(msg); 
+                    var S_lt = m[0].latitude; 
+                    var S_lng = m[0].longitude; 
+                    var SmyLatLng= {lat: S_lt, lng: S_lng};
+                    console.log("smylatlng: ", SmyLatLng);
+                    var options = {
+                        zoom:8,
+                        center: SmyLatLng
+                    }
+                    var map = new google.maps.Map(document.getElementById('map'),options);
+                    for(var i in m){
+                        if(!markers.includes(m[i])){
+                            markers.push(m[i]);
+                            add = true;
+                        }
 
-						if (add){						
-							var marker; 
-							var myLatLng;
-							for (var i in markers){
-								myLatLng = {lat: markers[i].latitude, lng: markers[i].longitude};
-								marker = new google.maps.Marker({
-									position: myLatLng,
-						  			map: map,
-						  			title: "newMarkers"
-								})
-							}
-						}
-					}		 	
-				},
-				error: function(xhr, ajaxOptions, thrownError){
-					alert("error fetching " +URL);
-				}
-			});
-		}
-	    google.maps.event.addDomListener(window,'load',initMap);
-	    window.setInterval(initMap,30000);
+                        if (add){                       
+                            var marker; 
+                            var myLatLng;
+                            for (var i in markers){
+                                myLatLng = {lat: markers[i].latitude, lng: markers[i].longitude};
+                                marker = new google.maps.Marker({
+                                    position: myLatLng,
+                                    map: map,
+                                    title: "newMarkers"
+                                })
+                            }
+                        }
+                    }           
+                },
+                error: function(xhr, ajaxOptions, thrownError){
+                    alert("error fetching " +URL);
+                }
+            });
+        }
+        google.maps.event.addDomListener(window,'load',initMap);
+        window.setInterval(initMap,30000);
 
-		
+        
 
-		
-	</script>
+        
+    </script>
     </head>
     <body>
         <h1>Welcome {{user}} to the app! ID: <p style="display:inline" id="userId">{{id}}</p>, Route ID: <p style="display:inline" id="routeId">{{route_id}}</p></h1>
-		<div id="map"></div>		
+        <div id="map"></div>        
     </body>
 </html>

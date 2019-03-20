@@ -22,7 +22,7 @@ app.listen(8080, function(){
 
 // This is nececssary because the SQL call happens aysnchronously
 function renderUserPage(res, name, id, route_id){
-    res.render('main',{
+    res.render('main_develop',{
         showTitle : true,
         helpers : {
             user: function() { 
