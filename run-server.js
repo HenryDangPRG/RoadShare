@@ -131,5 +131,30 @@ app.get("/newUser", function(req, res){
             return;
         }
     });   
+})
 
+/*
+app.get("/calculate", function(req, res){
+    console.log(req.query);
+    res.write("3220");
+    res.end();
+});
+*/
+
+// TODO : Finish this endpoint
+app.get('/startend', function(req, res){
+    route_id = parseInt(req.query.route_id);
+
+    var query = 'SELECT latitude, longitude FROM checkpoints, routes WHERE checkpoints.route_id=routes.route_id && checkpoints.route_id = ? && checkpoints.name="start"';
+    var query = mysql.format(query, [route_id]);
+
+    mysql_util.getQuery(query, function(results){
+        try {
+            console.log(results);
+            renderUserPage(res, results[0].username, id, results[0].route_id)
+        } catch (err){
+            console.log("[Rendering Error] " + err);
+            renderUserPage(res, "<User Or Route Id Not Found>");
+        }
+    });
 });
