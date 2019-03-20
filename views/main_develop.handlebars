@@ -61,7 +61,7 @@ function initMap() {
   var onChangeHandler = function() {
     calculateAndDisplayRoute(directionsService, directionsDisplay);
   };
-  document.getElementById('btn').addEventListener('click', onChangeHandler);
+  //document.getElementById('btn').addEventListener('click', onChangeHandler);
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -293,7 +293,9 @@ function fillFields(){
         <br>
   <b>End: </b>
   <input id="end" value="" /><br>
+  <!--
   <input id="btn" value="Get Directions" type="button" />
+  -->
   <button onclick="fastForward()">Fast Forward One Hour</button>
 </div>
 
