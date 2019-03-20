@@ -6,6 +6,8 @@ import sys
 
 parser=argparse.ArgumentParser(description='Generate HTTP GET traffic on 8080 from csv file');
 parser.add_argument('infile')
+parser.add_argument('--user-id',type=int,default=1)
+parser.add_argument('--route-id',type=int,default=1)
 parser.add_argument('--speedup',type=float,default=None)
 parser.add_argument('--chunk-by',type=int,default=10)
 parser.add_argument('-v,','--verbose',action='store_true')
@@ -15,8 +17,8 @@ routeId=None;
 userId=None;
 
 #rid_query = 'localhost:8080/newroute'
-routeId=7;
-userId=1;
+routeId=args.route_id;
+userId=args.user_id;
 
 url = 'http://localhost:8080/data'
 
