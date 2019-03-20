@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-var id;
 var mysql = require('mysql');
 var mysql_util = require('./util/mysql_util');
 
@@ -41,8 +40,8 @@ function renderUserPage(res, name, id, route_id){
 }
 
 app.get('/user', function(req, res){
-    id = parseInt(req.query.id);
-    route_id = parseInt(req.query.route_id);
+    var id = parseInt(req.query.id);
+    var route_id = parseInt(req.query.route_id);
 
     var query = mysql.format('SELECT users.username, routes.route_id FROM routes, users WHERE routes.user_id=users.ID && ID = ? && route_id = ?', [id, route_id]);
     mysql_util.getQuery(query, function(results){
@@ -156,18 +155,31 @@ app.get("/calculate", function(req, res){
 
 // TODO : Finish this endpoint
 app.get('/startend', function(req, res){
-    route_id = parseInt(req.query.route_id);
+    var route_id = parseInt(req.query.route_id);
 
-    var query = 'SELECT latitude, longitude FROM checkpoints, routes WHERE checkpoints.route_id=routes.route_id && checkpoints.route_id = ? && checkpoints.name="start"';
-    var query = mysql.format(query, [route_id]);
+    var queryStart = 'SELECT latitude, longitude FROM checkpoints, routes WHERE checkpoints.route_id=routes.route_id && checkpoints.route_id = ? && checkpoints.name="start"';
+    var queryStart = mysql.format(queryStart, [route_id]);
 
-    mysql_util.getQuery(query, function(results){
+    var queryEnd = 'SELECT latitude, longitude FROM checkpoints, routes WHERE checkpoints.route_id=routes.route_id && checkpoints.route_id = ? && checkpoints.name="end"';
+    var queryEnd = mysql.format(queryEnd, [route_id]);
+
+    mysql_util.getQuery(queryStart, function(results){
         try {
-            console.log(results);
-            renderUserPage(res, results[0].username, id, results[0].route_id)
+            start_lat = results[0].latitude;
+            start_long = results[0].longitude;
+            mysql_util.getQuery(queryEnd, function(results_2){
+                end_lat = results_2[0].latitude;
+                end_long = results_2[0].longitude;
+                res.json({
+                    "start_lat" : start_lat,
+                    "start_long" : start_long,
+                    "end_lat" : end_lat,
+                    "end_long" : end_long,
+                });
+                res.end();
+            });
         } catch (err){
-            console.log("[Rendering Error] " + err);
-            renderUserPage(res, "<User Or Route Id Not Found>");
+            console.log("[MySQL Error] " + err);
         }
     });
 });
