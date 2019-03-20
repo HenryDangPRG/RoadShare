@@ -2,11 +2,13 @@ import requests
 import json
 import argparse
 import time
+import sys
 
 parser=argparse.ArgumentParser(description='Generate HTTP GET traffic on 8080 from csv file');
 parser.add_argument('infile')
-parser.add_argument('--realtime',action='store_true')
+parser.add_argument('--speedup',type=float,default=None)
 parser.add_argument('--chunk-by',type=int,default=10)
+parser.add_argument('-v,','--verbose',action='store_true')
 args=parser.parse_args()
 
 routeId=None;
@@ -22,7 +24,6 @@ def push(url,params,data):
     good=False;
     data=json.dumps(data)
     while not good:
-        print (data);
         resp=requests.post(url=url,params=params,json=payload);
         good=(resp.status_code==requests.codes.ok)
         if not good:
@@ -36,7 +37,13 @@ fin=open(args.infile,'r');
 headers=fin.readline();
 count=0;
 total=0;
-last=None
+sleepfor=0.0;
+last=None;
+lastpacket=time.time();
+msg="None"
+if args.speedup is not None:
+    msg="%09.08f"%(1/args.speedup);
+print("sending data at 1 second simtime = %s seconds realtime"%(msg));
 for line in fin:
     values=[float(s) for s in line.split(',')];
     if last is None:
@@ -53,13 +60,21 @@ for line in fin:
     count+=1;total+=1;
     if count >= args.chunk_by:
         count=0;
+        t=time.time();
+        if args.verbose:
+            sys.stdout.write("\r%09.08fs since last packet sent\r"%(t-lastpacket));
+            sys.stdout.flush();
+        lastpacket=t;
         push(url,params,payload);
         payload['points']=[]
+        if args.speedup is not None:
+            time.sleep(sleepfor);
 
-    if args.realtime:
-        t=values[0]-last;
+    if args.speedup is not None:
+        t=(values[0]-last)/(args.speedup);
         last=values[0];
-        time.sleep(t);
+        sleepfor+=t;
+        #time.sleep(t);
 
 push(url,params,payload);
 print("Sent [n=] %d datapoints"%total)

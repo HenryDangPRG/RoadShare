@@ -55,7 +55,6 @@ app.get('/user', function(req, res){
 });
 
 app.get('/update', function(req, res){
-   
     var sql = mysql.format('SELECT timestamp, latitude, longitude FROM markers, routes, users WHERE  markers.route_id = routes.route_id && user_id = ?', [id]);
     mysql_util.getQuery(sql,function(results){
         try {
@@ -72,12 +71,11 @@ app.post('/data', function(req, res) {
     uid = parseInt(req.query.userId);
     rid = parseInt(req.query.routeId);
     dat = req.body.points;
-    //console.log(dat);
+
     res.status(200).send("OK");
-    //console.log(dat.length);
+
     var vals = '';
     for (var i=0; i<dat.length;i++) {
-        //console.log("Iteration: "+i)
         vals=vals+'(';
         vals=vals+dat[i]['route_id']+',';
         vals=vals+dat[i]['timestamp']+',';
@@ -90,12 +88,11 @@ app.post('/data', function(req, res) {
         if (i<dat.length-1) vals=vals+', ';
     }
     vals=vals+';'
-    //console.log(vals);
     var query ='INSERT INTO markers'
                     +' (route_id, timestamp, accelerometer_x, accelerometer_y, accelerometer_z, latitude, longitude ) '
                 +' VALUES '
                     +vals;
-    console.log(query)
+    
     mysql_util.getQuery(query, function(results) {
         try {
             console.log(results)
@@ -103,10 +100,6 @@ app.post('/data', function(req, res) {
             console.log("Error storing markers " + err);
         }
     });
-    
-    //msg=""+uid+":"+rid+"-"+dat[0]['timestamp']+" ("+dat[0]['accelerometer_x']+","+dat[0]['accelerometer_y']+")"
-    console.log("Received "+dat.length+" points");
-    //console.log(msg);
 });
 app.get("/newUser", function(req, res){
     var userName = req.query.username;
