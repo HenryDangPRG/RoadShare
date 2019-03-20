@@ -216,8 +216,6 @@ app.get("/calculate", function(req, res){
             console.log("[CalcError] Error calculating displacement: " + err);
         }
     });
-
-    res.write("3220");
 });
 
 
