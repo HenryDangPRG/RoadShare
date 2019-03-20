@@ -27,10 +27,12 @@
      </style>
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRcz1PygeoeBld7HsyqvwnVbQg6_XldXA"></script>
  <script src="./v3_epoly.js"></script>
- <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+ <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
+ 
 
  
 <script>
+var currentDistance = 6;
 var directionDisplay;
 var directionsService = new google.maps.DirectionsService();
 var map;
@@ -173,10 +175,10 @@ function getMarkerImage(iconColor) {
 }
 
 function changeColor(){
-    // Current distance in miles, MUST be an integer.
-    //TODO: You need to create a new table to store the current distance
-    // in miles that the user has moved!
-    var currentDistance = 6;
+    for(i = 0; i < gmarkers.length; i++){
+        gmarkers[i].setIcon('');
+    }
+
     for(i = 0; i < gmarkers.length; i++){
         if(parseInt(gmarkers[i].title) <= currentDistance){
             gmarkers[i].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
@@ -217,6 +219,25 @@ function populateFields(){
     });
 }
 
+function fastForward() {
+    URL = "http://localhost:8080/calculate";
+
+    $.ajax({
+        type: "GET",
+        url: URL,
+        dataType: "html",
+        success: function(msg){
+            numMeters = parseFloat(msg);
+            currentDistance = numMeters * 0.000621371;
+            changeColor();
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+            alert("Couldn't fast-forward due to a failed AJAX call");
+        }
+    });
+    //TODO: Throw the markers into start and end latitude with JQuery, then populate fields, then get directions  
+}
+
 </script>
 
    </head>
@@ -230,7 +251,7 @@ function populateFields(){
   <p>Insert your end latitude <input id="endLat"</p>
   <p>Insert your end longitude <input id="endLong"></p>
 
-  <button onclick="populateFields()">Populate Fields</button>
+  <button id="populateButton" onclick="populateFields()">Populate Fields</button>
     </br></br>
   <b>Start: </b>
   <input id="start" value="New York, NY" /><br>
@@ -238,7 +259,8 @@ function populateFields(){
   <b>End: </b>
   <input id="end" value="Newark, NJ" /><br>
   <input id="btn" value="Get Directions" type="button" />
-  <button onclick="changeColor()">Change everythings color</button>
+  <button id="changeColorButton" onclick="changeColor()">Change everythings color</button>
+  <button onclick="fastForward()">Fast Forward One Hour</button>
 </div>
 </script> 
    </body>
