@@ -8,7 +8,7 @@ var G_MINWID = 1e-8;
 
 function validate_consth(points) {
     var h = points[1][0] - points[0][0];
-    for (var i=0, i<points.length-1; i++) {
+    for (var i=0; i<points.length-1; i++) {
         h0 = points[i+1][0] - points[i][0];
         if (Math.abs(h-h0)<1e-12) {
             return false;
