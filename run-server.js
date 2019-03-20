@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-var id;
 var mysql = require('mysql');
 var mysql_util = require('./util/mysql_util')
 
@@ -39,8 +38,8 @@ function renderUserPage(res, name, id, route_id){
 }
 
 app.get('/user', function(req, res){
-    id = parseInt(req.query.id);
-    route_id = parseInt(req.query.route_id);
+    var id = parseInt(req.query.id);
+    var route_id = parseInt(req.query.route_id);
 
     var query = mysql.format('SELECT users.username, routes.route_id FROM routes, users WHERE routes.user_id=users.ID && ID = ? && route_id = ?', [id, route_id]);
     mysql_util.getQuery(query, function(results){
@@ -68,9 +67,9 @@ app.get('/update', function(req, res){
 });
 
 app.post('/data', function(req, res) {
-    uid = parseInt(req.query.userId);
-    rid = parseInt(req.query.routeId);
-    dat = req.body.points;
+    var uid = parseInt(req.query.userId);
+    var rid = parseInt(req.query.routeId);
+    var dat = req.body.points;
 
     res.status(200).send("OK");
 
@@ -136,7 +135,7 @@ app.get("/calculate", function(req, res){
 
 // TODO : Finish this endpoint
 app.get('/startend', function(req, res){
-    route_id = parseInt(req.query.route_id);
+    var route_id = parseInt(req.query.route_id);
 
     var queryStart = 'SELECT latitude, longitude FROM checkpoints, routes WHERE checkpoints.route_id=routes.route_id && checkpoints.route_id = ? && checkpoints.name="start"';
     var queryStart = mysql.format(queryStart, [route_id]);
