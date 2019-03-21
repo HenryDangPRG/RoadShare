@@ -83,7 +83,8 @@ function ctrap_unsafe (points, from = 0, to = -1, targetwidth = G_MINWID, interp
     for (var i=from;i<n;i++) {
         h=points[i][0] - points[i-1][0];
         a=(points[i][1] + points[i-1][1])/2.0 * h;
-        sum=sum+points[i][1];
+        sum=sum+a;//points[i][1];
+        console.log(points[i][0].toString()+"  h:  "+h +",  a:  "+a+"  sum=  "+sum);
     }
     return sum;
 }
@@ -207,7 +208,8 @@ function muller (f, x0, x1, x2, tol = G_MINWID, maxn = 500) {
 
 function getDeltaMag_m(pointsxy, tol = G_MINWID) {
     n=pointsxy.length;
-    fx = magnitude(pointsxy);
+    fx=magnitude(pointsxy);
+    fx=fx.sort(function(a,b){return a[0]-b[0];})
     fxx=[];
     fxxx=[];
     for (var i=0;i<n-1;i++)  {
