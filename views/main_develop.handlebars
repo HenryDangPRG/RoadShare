@@ -227,15 +227,17 @@ function fastForward() {
     URL = "http://localhost:8080/calculate";
     userId = $("#userId").text();
     routeId = $("#routeId").text();
+    numHours = parseInt($("#numHours").text()) + 1;
 
     $.ajax({
         type: "GET",
         url: URL,
-        data: {"userId": userId, "routeId": routeId},
+        data: {"userId": userId, "routeId": routeId, "numHours": numHours},
         success: function(msg){
             numMeters = parseFloat(msg);
             currentDistance = numMeters * 0.000621371;
             changeColor();
+            $("#numHours").text(numHours);
         },
         error: function(xhr, ajaxOptions, thrownError){
             alert("Couldn't fast-forward due to a failed AJAX call");
@@ -295,8 +297,8 @@ function fillFields(){
   <input id="btn" value="Get Directions" type="button" />
   -->
   <button onclick="fastForward()">Fast Forward One Hour</button>
+  <div>You've currently fasted forward <span id="numHours">0</span> hours</div>
 </div>
-
     <div id="resultDiv"></div>
 </script> 
    </body>
