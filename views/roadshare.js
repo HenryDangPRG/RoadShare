@@ -46,7 +46,7 @@ function signup() {
 		data: {"userid": userid, "password":password},
 		contentType: "application/json; charset=utf-8",
 		success:function(msg){
-			alert(msg);
+			
 			if (msg == "SUCCESS"){
 				$('#login').html("<h3>Thank you for signing up!</h3> <br> <a href='http://localhost:8080/' class='btn btn-primary btn-link btn-wd btn-lg'>Go back to login</a>");
 			}
