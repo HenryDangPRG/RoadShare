@@ -175,8 +175,9 @@ app.get("/newRoute", function(req, res){
     var user_id = req.query.user_id;
     var route_name = req.query.route_name;
     var start_date = req.query.start_date;
-    var query = mysql.format('INSERT INTO routes (user_id, route_name, start_date) VALUES (?)', [user_id, route_name, start_date]);
-
+    console.log(start_date);
+    var query = mysql.format('INSERT INTO routes (user_id, route_name, start_date) VALUES (?,?,?)', [user_id, route_name, start_date]);
+    console.log(query); 
     mysql_util.getQuery(query,function(results){
         try {
             console.log("Added new route for user : " + user_id);
@@ -185,9 +186,17 @@ app.get("/newRoute", function(req, res){
 
             mysql_util.getQuery(query,function(results){
                 try {
-                    res.sendStatus(200).send(results[results.length-1].id);
+                    //console.log(results);
+                    //console.log(results[results.length-1].route_id.toString());
+
+                    // res.status(200).send("11");
+                    res.write((results[results.length-1].route_id).toString());
+                    res.end();
+                    // res.status(200).send("ERROR");
                 } catch (err){
-                    res.sendStatus(400).send("-1");
+                    console.log(err);
+                    res.write("ERROR");
+                    res.end();
                     return;
                 }
             });   
