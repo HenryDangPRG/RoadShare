@@ -64,4 +64,9 @@ function signup() {
 	}
 }
 
-	
+function getstarted(){
+	var driverId = $('#Did').val(); 
+	var routeId = $('#Rid').val();
+	var URL = "http://localhost:8080/user?id="+driverId+"&route_id="+routeId;
+	window.location.href = URL;
+}
