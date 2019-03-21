@@ -9,6 +9,8 @@ var bodyParser = require('body-parser');
 
 var interpsuite = require('./util/interp');
 
+var everpolate = require('everpolate')
+
 var hbr = express_hbr.create({});
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(bodyParser.urlencoded({extended:false}));
@@ -205,32 +207,64 @@ app.get("/newRoute", function(req, res){
     });   
 })
 
+function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
+
 app.get("/calculate", function(req, res){
     console.log(req.query);
     var route_id = parseInt(req.query.routeId);
     var user_id = parseInt(req.query.userId);
+    var numHours = parseInt(req.query.numHours);
 
-    var query = 'SELECT timestamp, accelerometer_x, accelerometer_y FROM markers WHERE markers.route_id = ?'
+    var query = 'SELECT timestamp, latitude, longitude FROM markers WHERE markers.route_id = ?'
     var query = mysql.format(query, [route_id]);
 
     mysql_util.getQuery(query, function(results){
-        try {
-            n=results.length;
-            pointsxy=[];
-            for (var i=0; i<results.length;i++)
-                pointsxy.push([results['timestamp'],results['accelerometer_x'],results['accelerometer_y']]);
-            deltaMag = interpsuite.getDeltaMag_m(pointsxy);
-            res.write(deltaMag.toString());
-            console.log(deltaMag);
-            res.end();
-        } catch (err){
-            console.log("[CalcError] Error calculating displacement: " + err);
+        times = []
+        lats = []
+        longs = []
+
+        for(var i = 0; i < results.length; i++){
+            times.push(results[i].timestamp);
+            lats.push(results[i].latitude);
+            longs.push(results[i].longitude);
         }
+
+        linear = everpolate.linear;
+        firstData = results[0];
+        console.log("Passed : " + numHours);
+
+        oneHourLater = times[results.length - 1] + (numHours * 3600);
+        interpolatedLat = linear([oneHourLater], times, lats)
+        interpolatedLong = linear([oneHourLater], times, longs)
+
+        console.log(interpolatedLat);
+        console.log(interpolatedLong);
+        dist = getDistanceFromLatLonInKm(firstData.latitude, firstData.longitude, interpolatedLat[0], interpolatedLong[0]);
+        distInMeters = dist * 1000;
+        res.write(distInMeters.toString());
+        //res.write(deltaMag.toString());
+        //console.log("Final result is : " + deltaMag);
+        res.end();
     });
 });
 
 
-// TODO : Finish this endpoint
 app.get('/startend', function(req, res){
     var route_id = parseInt(req.query.route_id);
 
