@@ -175,6 +175,13 @@ app.get("/newRoute", function(req, res){
     var user_id = req.query.user_id;
     var route_name = req.query.route_name;
     var start_date = req.query.start_date;
+
+    var start_lat = req.query.start_lat;
+    var start_long = req.query.start_long;
+
+    var end_lat = req.query.end_lat;
+    var end_long = req.query.end_long;
+
     console.log(start_date);
     var query = mysql.format('INSERT INTO routes (user_id, route_name, start_date) VALUES (?,?,?)', [user_id, route_name, start_date]);
     console.log(query); 
@@ -186,12 +193,20 @@ app.get("/newRoute", function(req, res){
 
             mysql_util.getQuery(query,function(results){
                 try {
+                    var insertQuery = mysql.format("INSERT INTO checkpoints (route_id, name, latitude, longitude) VALUES (?, 'start', ?, ?)",
+                        [results[results.length-1].route_id, start_lat, start_long]);
+                    var insertQuery2 = mysql.format("INSERT INTO checkpoints (route_id, name, latitude, longitude) VALUES (?, 'end', ?, ?)",
+                        [results[results.length-1].route_id, end_lat, end_long]);
                     //console.log(results);
                     //console.log(results[results.length-1].route_id.toString());
 
                     // res.status(200).send("11");
                     res.write((results[results.length-1].route_id).toString());
                     res.end();
+
+                    mysql_util.getQuery(insertQuery, function(results){
+                        mysql_util.getQuery(insertQuery2, function(results){});
+                    });
                     // res.status(200).send("ERROR");
                 } catch (err){
                     console.log(err);

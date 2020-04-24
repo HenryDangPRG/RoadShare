@@ -22,6 +22,12 @@ function newroute(){
   var startdate  = Math.floor(Date.now()/1000); 
   var user_id = $('#Did').val();
     var route_name = $('#Rid').val();
+    var start_lat = $("#startLat").val();
+    var start_long = $("#startLong").val();
+
+    var end_lat = $("#endLat").val();
+    var end_long = $("#endLong").val();
+
     var URL = "http://localhost:8080/newRoute"
     if (user_id == '' || route_name == ''){
     $('#error').html("Please fill in all the fields.");
@@ -30,7 +36,8 @@ function newroute(){
     $.ajax({
     type: "GET",
     url : URL,
-    data: {"start_date": startdate, "user_id":user_id, "route_name": route_name},
+    data: {"start_date": startdate, "user_id":user_id, "route_name": route_name, 
+           "start_lat": start_lat, "start_long": start_long, "end_lat": end_lat, "end_long": start_long},
     contentType: "application/json; charset=utf-8",
     success:function(msg){  
  
@@ -78,6 +85,7 @@ function newroute(){
                   </div>
                   <input type="text" class="form-control" id="Did" placeholder="Driver's id...">
                 </div>
+
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text">
@@ -86,6 +94,43 @@ function newroute(){
                   </div>
                      <input type="text" class="form-control" id="Rid" placeholder="Route name...">
                 </div>
+
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="material-icons">flight_takeoff</i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" id="startLat" placeholder="Start Latitude">
+                </div>
+
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="material-icons">flight_takeoff</i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" id="startLong" placeholder="Start Longitude">
+                </div>
+
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="material-icons">flight_land</i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" id="endLat" placeholder="End Latitude">
+                </div>
+
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="material-icons">flight_land</i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" id="endLong" placeholder="End Longitude">
+                </div>
+
                 <div id="newroute" class="input-group"> </div>
                 <div class="input-group">
                   <a class="btn btn-primary btn-sm" onclick="newroute()">Create Route</a>
